@@ -12,6 +12,8 @@ import { RaspodelaDialogComponent } from '../raspodela-dialog/raspodela-dialog.c
 import { StudentComponent } from '../student/student.component';
 import { StatistikaDialogComponent } from 'src/app/components/statistika-dialog/statistika-dialog.component';
 import { ManjiKapacitetComponent } from 'src/app/components/manji-kapacitet/manji-kapacitet.component';
+import { LinearnoPomeranjeDialogComponent } from 'src/app/components/linearno-pomeranje-dialog/linearno-pomeranje-dialog.component'
+
 @Component({
   selector: 'app-raspodela',
   templateUrl: './raspodela.component.html',
@@ -137,6 +139,31 @@ export class RaspodelaComponent implements OnInit {
         kapacitet: this.kapacitet,
         slot: this.slot,
         labVezbaId: this.labVezbaId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        const payload = {
+          ...result,
+          labVezbaId: this.labVezbaId,
+          kraj: moment(result.kraj, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm') + ':00Z',
+        };
+
+        this.rasporedService.smanjenKapacitet(payload).subscribe(x => {
+          // this.stat = x;
+        });
+      }
+    });
+  }
+
+
+  openDialogLinearnoPomeranje(): void {
+    const dialogRef = this.dialog.open(LinearnoPomeranjeDialogComponent, {
+      width: '350px',
+      data: {
+        // redosled: this.redosled,
+        
       }
     });
 

@@ -38,6 +38,10 @@ export class RasporedService {
     return this.http.post('/api/Raspored/smanjenkapacitet', val, { responseType: "text" });
   }
 
+  linearnoPomeranje(val: any) {
+    return this.http.post('/api/Raspored/linearnopomeranje', val, { responseType: "text" });
+  }
+
   createMultiple(val) {
     return this.http.post(`/api/Raspored/multiple`, val);
   }

@@ -357,6 +357,16 @@ namespace WebApplication.Controllers
             return Ok(message);
         }
 
+
+        [AllowAnonymous]
+        [HttpPost("linearnopomeranje")]   
+        public IActionResult Linearnopomeranje([FromBody] UporediUzorkeModel parametri)
+        {
+            //TODO
+
+            return Ok();
+        }
+
         #region protocno
 
         [AllowAnonymous]

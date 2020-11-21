@@ -27,7 +27,7 @@ import { UploadCsvDialogComponent } from './components/upload-csv-dialog/upload-
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { StatistikaDialogComponent } from './components/statistika-dialog/statistika-dialog.component';
 import { ManjiKapacitetComponent } from './components/manji-kapacitet/manji-kapacitet.component';
-
+import { LinearnoPomeranjeDialogComponent } from './components/linearno-pomeranje-dialog/linearno-pomeranje-dialog.component'
 
 
 
@@ -60,8 +60,9 @@ export const FORMAT = {
     IzmeniRasporedDialogComponent,
     UploadCsvDialogComponent,
     StatistikaDialogComponent,
-    ManjiKapacitetComponent
-  ],
+    ManjiKapacitetComponent,
+    LinearnoPomeranjeDialogComponent
+     ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
@@ -98,7 +99,8 @@ export const FORMAT = {
     IzmeniRasporedDialogComponent,
     UploadCsvDialogComponent,
     StatistikaDialogComponent,
-    ManjiKapacitetComponent
+    ManjiKapacitetComponent,
+    LinearnoPomeranjeDialogComponent
   ],
   bootstrap: [AppComponent]
 })
