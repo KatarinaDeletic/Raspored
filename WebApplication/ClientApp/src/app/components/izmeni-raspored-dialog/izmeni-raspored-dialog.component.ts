@@ -3,7 +3,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 import { LabVezba } from 'src/app/models/lab-vezba.model';
-import { Student } from 'src/app/models/student.model';
 import { LabVezbaService } from 'src/app/services/lab-vezba.service';
 
 export interface IzmeniRasporedDialogData {

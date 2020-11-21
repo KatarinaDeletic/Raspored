@@ -47,7 +47,7 @@ export class RasporedComponent implements OnInit {
     if (value !== -1) {
       this.service.filterRaspored({ labId: value, specId: -1 }).subscribe(x => this.refresh(x));
       this.labVezbaSpecificnaService.getLabVezbaSList({ labVezbaId: value }).subscribe(
-        x => this.labSpecificne = x/*Postoje duplikati, ne znam da li su duplikati slucajni ili namerni => .filter((v, i, a) => a.findIndex(t => (t.redosled === v.redosled)) === i)*/);
+        x => this.labSpecificne = x);
     } else {
       this.service.getRaspored().subscribe(data => {
         this.refresh(data);
@@ -106,6 +106,5 @@ export class RasporedComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
-    // this.table.renderRows();
   }
 }
