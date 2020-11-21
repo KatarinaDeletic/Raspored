@@ -1,0 +1,12 @@
+D:\Diplomski\Baza\bin\Debug\netcoreapp3.1\Baza.deps.json
+D:\Diplomski\Baza\bin\Debug\netcoreapp3.1\Baza.runtimeconfig.json
+D:\Diplomski\Baza\bin\Debug\netcoreapp3.1\Baza.runtimeconfig.dev.json
+D:\Diplomski\Baza\bin\Debug\netcoreapp3.1\Baza.dll
+D:\Diplomski\Baza\bin\Debug\netcoreapp3.1\Baza.pdb
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.csprojAssemblyReference.cache
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.AssemblyInfoInputs.cache
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.AssemblyInfo.cs
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.csproj.CoreCompileInputs.cache
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.dll
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.pdb
+D:\Diplomski\Baza\obj\Debug\netcoreapp3.1\Baza.genruntimeconfig.cache

@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <div class="col" style="padding-bottom: 1em;">
+      <div style="margin: 10px;">
+        Ime: <b>{{data.student.ime}}</b>
+      </div>
+      <div style="margin: 10px;">
+        Prezime: <b>{{data.student.prezime}}</b>
+      </div>
+      <div style="margin: 10px;">
+        Index: <b>{{data.student.indeks}}</b>
+      </div>
+      <mat-form-field>
+        <mat-label>Lab vezba</mat-label>
+        <mat-select required [(ngModel)]="data.labVezba">
+          <mat-option *ngFor="let food of labVezbe|async" [value]="food.id">
+            {{food.naziv}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="b-row">
+    <button mat-raised-button (click)="onNoClick()">Odustani</button>
+    <button mat-raised-button [mat-dialog-close]="data">Sacuvaj</button>
+  </div>
+</div>

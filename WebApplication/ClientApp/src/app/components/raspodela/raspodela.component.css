@@ -1,0 +1,25 @@
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+}
+
+.button-flex {
+  margin-left: 1%;
+  flex-direction: column;
+}
+
+button {
+  height: 100%;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.text-div {
+  display: flex;
+  align-items: center;
+  padding-left: 1em;
+}

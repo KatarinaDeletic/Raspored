@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "D2aaOHnZbuCxyG8TCIuTI+3f73Xj8Dy9bS6NMrwcLKd2WOfEAtBPfggAhWv90Wzey+6yvGPcdHwit9bBneE2NA==",
+  "success": true,
+  "projectFilePath": "D:\\Diplomski\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\katar\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.9\\microsoft.extensions.dependencyinjection.abstractions.3.1.9.nupkg.sha512",
+    "C:\\Users\\katar\\.nuget\\packages\\microsoft.extensions.options\\3.1.9\\microsoft.extensions.options.3.1.9.nupkg.sha512",
+    "C:\\Users\\katar\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.9\\microsoft.extensions.primitives.3.1.9.nupkg.sha512"
+  ],
+  "logs": []
+}

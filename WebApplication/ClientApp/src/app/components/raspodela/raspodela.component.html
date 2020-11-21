@@ -1,0 +1,26 @@
+<div>
+  <div class="controls">
+    <mat-form-field appearance="fill">
+      <mat-label>Odaberite lab vežbu</mat-label>
+      <mat-select [(value)]="labVezbaId" (selectionChange)="test($event.value)">
+        <mat-option *ngFor="let vezba of labVezbe" [value]="vezba.id">{{ vezba.naziv }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class='button-flex'>
+      <button mat-raised-button (click)="openDialog()">Raspodeli</button>
+    </div>
+    <div class='button-flex'>
+      <button mat-raised-button (click)="openDialogManjiKapacitet()">Smanji Kapacitet Ucionice</button>
+    </div>
+  </div>
+  <div class="controls">
+    <div class='button-flex'>
+      <button mat-raised-button (click)="openDialogStatistika()">Statistika</button>
+    </div>
+    <div class="text-div">
+      <div>{{stat}}</div>
+    </div>
+  </div>
+</div>
+
+<app-student #dataTable isRaspodela="true"></app-student>

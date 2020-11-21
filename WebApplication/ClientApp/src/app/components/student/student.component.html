@@ -1,0 +1,52 @@
+<div style="padding: 1em;">
+  <div style="padding: 1em; background-color: #3f51b5;">
+    <button mat-raised-button (click)="openDialog({})">Kreiraj studenta</button>
+    <button mat-raised-button (click)="openBulkDialog()" style="margin-left: 1em;">Import podataka</button>
+  </div>
+
+  <mat-card>
+    <div>
+      <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="50"
+        [pageSizeOptions]="[25, 50, 100, 250]">
+      </mat-paginator>
+      <div class="table-responsive">
+        <table mat-table class="full-width-table" matSort aria-label="Elements">
+          <!-- Ime Column -->
+          <ng-container matColumnDef="ime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Ime</th>
+            <td mat-cell *matCellDef="let row">{{row.ime}}</td>
+          </ng-container>
+
+          <!-- Prezime Column -->
+          <ng-container matColumnDef="prezime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Prezime</th>
+            <td mat-cell *matCellDef="let row">{{row.prezime}}</td>
+          </ng-container>
+
+          <!-- Indeks Column -->
+          <ng-container matColumnDef="indeks">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Indeks</th>
+            <td mat-cell *matCellDef="let row">{{row.indeks}}</td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+            <td mat-cell *matCellDef="let row">{{row.username}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Akcije</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-raised-button (click)="openDialog(row)">Izmeni</button>
+              <button mat-raised-button style="margin-left:10px;" (click)="openDialog2(row)">Dodaj lab vezbu</button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </mat-card>
+</div>

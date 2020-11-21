@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col" style="padding-bottom: 1em;">
+      <mat-form-field>
+        <mat-label>Učionica</mat-label>
+        <input matInput [formControl]="ucionicaFormControl" [(ngModel)]="data.ucionica">
+        <mat-error
+          *ngIf="ucionicaFormControl.hasError('pattern') && (ucionicaFormControl.dirty || ucionicaFormControl.touched)">
+          Dozvoljene su samo brojčane vrednosti!
+        </mat-error>
+        <mat-error *ngIf="ucionicaFormControl.hasError('required')">
+          Učionica je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput readonly [ngxMatDatetimePicker]="pickerPocetak" placeholder="Početak"
+          [(ngModel)]="data.pocetakLaba" ngDefaultControl>
+        <mat-datepicker-toggle matSuffix [for]="pickerPocetak"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #pickerPocetak>
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput readonly [ngxMatDatetimePicker]="pickerKraj" placeholder="Kraj" [(ngModel)]="data.zavrsetakLaba"
+          ngDefaultControl>
+        <mat-datepicker-toggle matSuffix [for]="pickerKraj"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #pickerKraj>
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="b-row">
+    <button mat-raised-button (click)="onNoClick()">Odustani</button>
+    <button mat-raised-button [mat-dialog-close]="data">Sačuvaj</button>
+  </div>
+</div>

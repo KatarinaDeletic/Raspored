@@ -1,0 +1,19 @@
+<mat-form-field>
+  <ngx-mat-file-input #fileRef [formControl]="fileControl" accept=".csv" placeholder="Required input"
+    valuePlaceholder="No file selected" required>
+  </ngx-mat-file-input>
+</mat-form-field>
+
+<div *ngFor="let item of headers" style="padding: 1em; display: flex;">
+  <span style="flex-grow: 1;">{{item.csvHeader}}</span>
+  <mat-form-field>
+    <mat-label>Vrednost</mat-label>
+    <mat-select style="flex-grow: 1;margin-left: 1em;" (selectionChange)="item.apiHeader=$event.value">
+      <mat-option *ngFor="let apiHeader of data.apiHeaders" [value]="apiHeader"> {{apiHeader}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div>
+  <button mat-raised-button (click)="abort()">Odustani</button>
+  <button mat-raised-button (click)="finish()">Sačuvaj</button>
+</div>

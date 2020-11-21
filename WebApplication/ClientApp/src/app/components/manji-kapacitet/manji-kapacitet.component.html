@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <mat-select [(value)]="data.labVezbaSpecificnaId">
+        <mat-option *ngFor="let vezba of specificne" [value]="vezba.id">{{ vezba.redosled }} -
+          {{vezba.vremeOd|date:"dd-MM-yyyy HH:mm"}}
+        </mat-option>
+      </mat-select>
+      <mat-form-field>
+        <mat-label>Kapacitet</mat-label>
+        <input matInput [formControl]="kapacitetFormControl" [(ngModel)]="data.kapacitet">
+        <mat-error
+          *ngIf="kapacitetFormControl.hasError('pattern') && (kapacitetFormControl.dirty || kapacitetFormControl.touched)">
+          Dozvoljene su samo brojčane vrednosti!
+        </mat-error>
+        <mat-error *ngIf="kapacitetFormControl.hasError('required')">
+          Kapacitet je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Slot</mat-label>
+      <input matInput [formControl]="slotFormControl" [(ngModel)]="data.slot">
+      <mat-error *ngIf="slotFormControl.hasError('pattern') && (slotFormControl.dirty || slotFormControl.touched)">
+        Dozvoljene su samo brojčane vrednosti!
+      </mat-error>
+      <mat-error *ngIf="slotFormControl.hasError('required')">
+        Slot je <strong>obavezno</strong> polje!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Trajanje (u min)</mat-label>
+      <input matInput [formControl]="trajanjeFormControl" [(ngModel)]="data.trajanje">
+      <mat-error
+        *ngIf="trajanjeFormControl.hasError('pattern') && (trajanjeFormControl.dirty || trajanjeFormControl.touched)">
+        Dozvoljene su samo brojčane vrednosti!
+      </mat-error>
+      <mat-error *ngIf="trajanjeFormControl.hasError('required')">
+        Trajanje je <strong>obavezno</strong> polje!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput readonly [ngxMatDatetimePicker]="pickerKraj" placeholder="Kraj" [(ngModel)]="data.kraj"
+        ngDefaultControl>
+      <mat-datepicker-toggle matSuffix [for]="pickerKraj"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #pickerKraj>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+  </div>
+
+  <div class="b-row">
+    <button mat-raised-button (click)="onNoClick()">Odustani</button>
+    <button mat-raised-button (click)="onSubmit()">Preraspodeli</button>
+  </div>
+</div>

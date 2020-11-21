@@ -1,0 +1,33 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left: 2%;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.b-row {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+}
+
+button{
+  flex: 1 1 auto;
+  margin: 2% 2%;
+  padding: 0%;
+}
+
+mat-form-field {
+  margin-bottom: 1.2em;
+}

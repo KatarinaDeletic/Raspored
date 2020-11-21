@@ -1,0 +1,26 @@
+<div class="pic">
+  <div class="container">
+    <mat-card class="login-container">
+      <mat-card-header>
+        <mat-card-title>Prijava studenata</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="onSubmit($event)">
+          <mat-form-field>
+            <input matInput placeholder="Username" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Password" type="password" required>
+          </mat-form-field>
+          <div class="stud-log">
+            <span><a routerLink="/login/profesor">Prijavi se kao profesor</a></span>
+          </div>
+          <p class="error" *ngIf='error'>{{errorMsg}}</p>
+          <div class="buttons">
+            <button mat-raised-button type="submit">Prijavi se</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

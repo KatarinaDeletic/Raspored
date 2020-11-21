@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+
+      <mat-form-field>
+        <mat-label>Redosled</mat-label>
+        <input matInput [formControl]="redosledFormControl" [(ngModel)]="data.redosled">
+        <mat-error
+          *ngIf="redosledFormControl.hasError('pattern') && (redosledFormControl.dirty || redosledFormControl.touched)">
+          Dozvoljene su samo brojčane vrednosti!
+        </mat-error>
+        <mat-error *ngIf="redosledFormControl.hasError('required')">
+          Redosled je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="b-row">
+    <button mat-raised-button (click)="onNoClick()">Odustani</button>
+    <button mat-raised-button (click)="onSubmit()">OK</button>
+  </div>
+</div>

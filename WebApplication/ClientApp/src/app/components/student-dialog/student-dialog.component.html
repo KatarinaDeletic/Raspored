@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row">
+    <div class="col" style="padding-bottom: 1em;">
+      <mat-form-field>
+        <mat-label>Ime</mat-label>
+        <input matInput [formControl]="imeFormControl" [(ngModel)]="data.ime">
+        <mat-error *ngIf="imeFormControl.hasError('required')">
+          Ime je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Prezime</mat-label>
+        <input matInput [formControl]="prezimeFormControl" [(ngModel)]="data.prezime">
+        <mat-error *ngIf="prezimeFormControl.hasError('required')">
+          Prezime je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Indeks</mat-label>
+        <input matInput [formControl]="indeksFormControl" [(ngModel)]="data.indeks">
+        <mat-error *ngIf="indeksFormControl.hasError('required')">
+          Indeks je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [formControl]="usernameFormControl" [(ngModel)]="data.username">
+        <mat-error *ngIf="usernameFormControl.hasError('required')">
+          Email je <strong>obavezno</strong> polje!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="padding-bottom:2em;">
+        <mat-label>Password</mat-label>
+        <input matInput [formControl]="passwordFormControl" [(ngModel)]="data.password">
+        <mat-error *ngIf=" data.isCreation && passwordFormControl.hasError('required')">
+          Password je <strong>obavezno</strong> polje!
+        </mat-error>
+        <mat-hint *ngIf="!data.isCreation">Ako se prosledi neki tekst, lozinka ce biti promenjena na taj tekst</mat-hint>
+      </mat-form-field>
+      <mat-checkbox [(ngModel)]="data.notifikacije">
+        Notifikacije
+      </mat-checkbox>
+    </div>
+  </div>
+  <div class="b-row">
+    <button mat-raised-button (click)="onNoClick()">Odustani</button>
+    <button mat-raised-button (click)="onSubmit()">Sacuvaj</button>
+  </div>
+</div>
