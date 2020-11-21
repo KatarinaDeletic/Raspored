@@ -1,20 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, NumberValueAccessor, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { LabVezbaSpecificna } from 'src/app/models/lab-vezba-specificna.model';
+import { LabSpecificnaService } from 'src/app/services/lab-specificna.service';
 
 
 export interface DialogData {
-  redosled: number;
-  ucionica: string;
-  // brojStudenata: number;
-  labVezbaId: number;
-  trajanje: number;
-  pocetak: string;
-  kraj: string;
   kapacitet: number;
+  trajanje: number;
   slot: number;
-  minindeks: number;
-}
+  kraj: string;
+  labVezbaId: number;
+  labVezbaSpecificnaId: number;
+  pomeranje: number;
+ }
 
 @Component({
   selector: 'app-linearno-pomeranje-dialog',
@@ -23,45 +22,23 @@ export interface DialogData {
 })
 export class LinearnoPomeranjeDialogComponent implements OnInit {
 
+  specificne: LabVezbaSpecificna[];
 
-  redosledFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d+$/)
-  ]);
-
-  kapacitetFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d+$/)
-  ]);
-
-  ucionicaFormControl = new FormControl('', [
+  pomeriZaFormControl = new FormControl('', [
     Validators.required
   ]);
 
-  // brojStudenataFormControl = new FormControl('', [
-  //   Validators.required,
-  //   Validators.pattern(/^\d+$/)
-  // ]);
-
-  slotFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d+$/)
-  ]);
-
-  trajanjeFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d+$/)
-  ]);
-
-  minIndexFormControl = new FormControl('', [
+   minIndexFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(/^\d+$/)
   ]);
   
   constructor(public dialogRef: MatDialogRef<LinearnoPomeranjeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+        private labVezbaSpecificna: LabSpecificnaService) { }
 
   ngOnInit() {
+    this.labVezbaSpecificna.getLabVezbaSList({ labVezbaId: this.data.labVezbaId }).subscribe(x => this.specificne = x);
   }
 
   onNoClick() {
@@ -69,9 +46,8 @@ export class LinearnoPomeranjeDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.redosledFormControl.valid && this.kapacitetFormControl.valid && this.ucionicaFormControl.valid
-      && this.slotFormControl.valid && this.trajanjeFormControl.valid && this.data.trajanje && this.data.pocetak !== undefined
-      && this.data.kraj !== undefined) {
+    //if (this.data.kraj !== undefined) {
+      if(true){
       this.dialogRef.close(this.data);
     } else {
       alert('Proverite tačnost svih polja!');

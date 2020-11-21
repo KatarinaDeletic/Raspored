@@ -162,8 +162,11 @@ export class RaspodelaComponent implements OnInit {
     const dialogRef = this.dialog.open(LinearnoPomeranjeDialogComponent, {
       width: '350px',
       data: {
-        // redosled: this.redosled,
-        
+        redosled: this.redosled,
+        kraj: this.kraj,
+        kapacitet: this.kapacitet,
+        slot: this.slot,
+        labVezbaId: this.labVezbaId
       }
     });
 
@@ -172,10 +175,9 @@ export class RaspodelaComponent implements OnInit {
         const payload = {
           ...result,
           labVezbaId: this.labVezbaId,
-          kraj: moment(result.kraj, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm') + ':00Z',
-        };
+          };
 
-        this.rasporedService.smanjenKapacitet(payload).subscribe(x => {
+        this.rasporedService.linearnoPomeranje(payload).subscribe(x => {
           // this.stat = x;
         });
       }
