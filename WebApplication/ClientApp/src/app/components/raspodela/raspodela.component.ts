@@ -34,7 +34,7 @@ export class RaspodelaComponent implements OnInit {
   kapacitet: number;
   slot: number;
   stat: string;
-
+  noviKapacitet: number;
   tag: string;
   naziv: string;
 
@@ -138,7 +138,9 @@ export class RaspodelaComponent implements OnInit {
         kraj: this.kraj,
         kapacitet: this.kapacitet,
         slot: this.slot,
-        labVezbaId: this.labVezbaId
+        labVezbaId: this.labVezbaId,
+        pocetak: this.pocetak,
+        noviKapacitet: this.noviKapacitet
       }
     });
 
@@ -148,6 +150,7 @@ export class RaspodelaComponent implements OnInit {
           ...result,
           labVezbaId: this.labVezbaId,
           kraj: moment(result.kraj, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm') + ':00Z',
+          pocetak: moment(result.pocetak, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm') + ':00Z',
         };
 
         this.rasporedService.smanjenKapacitet(payload).subscribe(x => {
@@ -162,11 +165,7 @@ export class RaspodelaComponent implements OnInit {
     const dialogRef = this.dialog.open(LinearnoPomeranjeDialogComponent, {
       width: '350px',
       data: {
-        redosled: this.redosled,
-        kraj: this.kraj,
-        kapacitet: this.kapacitet,
-        slot: this.slot,
-        labVezbaId: this.labVezbaId
+        labVezbaId: this.labVezbaId,
       }
     });
 
@@ -174,8 +173,7 @@ export class RaspodelaComponent implements OnInit {
       if (result !== undefined) {
         const payload = {
           ...result,
-          labVezbaId: this.labVezbaId,
-          };
+        };
 
         this.rasporedService.linearnoPomeranje(payload).subscribe(x => {
           // this.stat = x;

@@ -6,14 +6,10 @@ import { LabSpecificnaService } from 'src/app/services/lab-specificna.service';
 
 
 export interface DialogData {
-  kapacitet: number;
-  trajanje: number;
-  slot: number;
-  kraj: string;
   labVezbaId: number;
   labVezbaSpecificnaId: number;
-  pomeranje: number;
- }
+  pomeraj: number;
+}
 
 @Component({
   selector: 'app-linearno-pomeranje-dialog',
@@ -28,14 +24,14 @@ export class LinearnoPomeranjeDialogComponent implements OnInit {
     Validators.required
   ]);
 
-   minIndexFormControl = new FormControl('', [
+  minIndexFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(/^\d+$/)
   ]);
-  
+
   constructor(public dialogRef: MatDialogRef<LinearnoPomeranjeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        private labVezbaSpecificna: LabSpecificnaService) { }
+    private labVezbaSpecificna: LabSpecificnaService) { }
 
   ngOnInit() {
     this.labVezbaSpecificna.getLabVezbaSList({ labVezbaId: this.data.labVezbaId }).subscribe(x => this.specificne = x);
@@ -47,7 +43,7 @@ export class LinearnoPomeranjeDialogComponent implements OnInit {
 
   onSubmit() {
     //if (this.data.kraj !== undefined) {
-      if(true){
+    if (true) {
       this.dialogRef.close(this.data);
     } else {
       alert('Proverite tačnost svih polja!');

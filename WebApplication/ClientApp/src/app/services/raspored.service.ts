@@ -39,10 +39,14 @@ export class RasporedService {
   }
 
   linearnoPomeranje(val: any) {
-    return this.http.post('/api/Raspored/linearnopomeranje', val, { responseType: "text" });
+    return this.http.post('/api/Raspored/linearno-pomeranje', val, { responseType: "text" });
   }
 
   createMultiple(val) {
     return this.http.post(`/api/Raspored/multiple`, val);
+  }
+
+  predloziVrednostSlota(val) {
+    return this.http.post(`/api/Raspored/slot`, val, { responseType: 'text' });
   }
 }

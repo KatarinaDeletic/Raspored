@@ -3,7 +3,7 @@
     <div class="col">
       <mat-form-field>
         <mat-label>Redosled</mat-label>
-        <input matInput [formControl]="redosledFormControl" [(ngModel)]="data.redosled">
+        <input matInput [formControl]="redosledFormControl" [(ngModel)]="data.redosled" (change)="predlozi()">
         <mat-error
           *ngIf="redosledFormControl.hasError('pattern') && (redosledFormControl.dirty || redosledFormControl.touched)">
           Dozvoljene su samo brojčane vrednosti!

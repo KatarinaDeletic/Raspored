@@ -1,25 +1,23 @@
 <div class="container">
-    <div class="row">
-      <div class="col">
-        <mat-select [(value)]="data.labVezbaSpecificnaId">
-          <mat-option *ngFor="let vezba of specificne" [value]="vezba.id">{{ vezba.redosled }} -
-            {{vezba.vremeOd|date:"dd-MM-yyyy HH:mm"}}
-          </mat-option>
-        </mat-select>
-          <mat-form-field>
+  <div class="row">
+    <div class="col">
+      <mat-select [(value)]="data.labVezbaSpecificnaId">
+        <mat-option *ngFor="let vezba of specificne" [value]="vezba.id">{{ vezba.redosled }} -
+          {{vezba.vremeOd|date:"dd-MM-yyyy HH:mm"}}
+        </mat-option>
+      </mat-select>
+      <mat-form-field>
         <mat-label>Pomeri za (min)</mat-label>
-        <input matInput [formControl]="pomeriZaFormControl" [(ngModel)]="data.pomeranje">
-        <mat-error
-          *ngIf="(pomeriZaFormControl.dirty || pomeriZaFormControl.touched)">
+        <input matInput [formControl]="pomeriZaFormControl" [(ngModel)]="data.pomeraj">
+        <mat-error *ngIf="(pomeriZaFormControl.dirty || pomeriZaFormControl.touched)">
           Dozvoljene su samo brojčane vrednosti!
         </mat-error>
         <mat-error *ngIf="pomeriZaFormControl.hasError('required')">
           Pomeranje je <strong>obavezno</strong> polje!
         </mat-error>
       </mat-form-field>
-    <div class="b-row">
-      <button mat-raised-button (click)="onNoClick()">Odustani</button>
-      <button mat-raised-button (click)="onSubmit()">Pomeri</button>
+      <div class="b-row">
+        <button mat-raised-button (click)="onNoClick()">Odustani</button>
+        <button mat-raised-button (click)="onSubmit()">Pomeri</button>
+      </div>
     </div>
-  </div>
-  

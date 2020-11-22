@@ -6,8 +6,10 @@ import { LabSpecificnaService } from 'src/app/services/lab-specificna.service';
 
 export interface DialogData {
   kapacitet: number;
+  noviKapacitet: number;
   trajanje: number;
   slot: number;
+  pocetak: string;
   kraj: string;
   labVezbaId: number;
   labVezbaSpecificnaId: number;

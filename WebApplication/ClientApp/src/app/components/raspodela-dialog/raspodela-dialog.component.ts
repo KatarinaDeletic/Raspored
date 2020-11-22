@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, NumberValueAccessor, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { RasporedService } from 'src/app/services/raspored.service';
 
 export interface DialogData {
   redosled: number;
@@ -58,7 +59,8 @@ export class RaspodelaDialogComponent implements OnInit {
   ]);
 
   constructor(public dialogRef: MatDialogRef<RaspodelaDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private raspored: RasporedService) { }
 
   ngOnInit() {
   }
@@ -75,5 +77,11 @@ export class RaspodelaDialogComponent implements OnInit {
     } else {
       alert('Proverite tačnost svih polja!');
     }
+  }
+
+  predlozi() {
+    this.raspored.predloziVrednostSlota({ redosled: this.data.redosled, labVezbaId: this.data.labVezbaId }).subscribe(x => {
+      alert(x);
+    })
   }
 }

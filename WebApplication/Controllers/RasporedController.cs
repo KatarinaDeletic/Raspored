@@ -359,14 +359,42 @@ namespace WebApplication.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("linearnopomeranje")]   
-        public IActionResult Linearnopomeranje([FromBody] UporediUzorkeModel parametri)
+        [HttpPost("linearno-pomeranje")]
+        public IActionResult LinearnoPomeranje([FromBody] LinearnoPomeranjeModel parametri)
         {
-            //TODO
+            var specificna = db.LabSpecificna.FirstOrDefault(x => x.Id == parametri.LabVezbaSpecificnaId);
+
+            if (specificna is null) return BadRequest();
+
+            var specificne = db.LabSpecificna.Where(x => x.VremeOd >= specificna.VremeOd
+            && x.Redosled == specificna.Redosled
+            && x.VremeOd.Value.Date == specificna.VremeOd.Value.Date);
+
+            foreach (var spec in specificne)
+            {
+                spec.VremeOd = spec.VremeOd.Value.AddMinutes(parametri.Pomeraj);
+            }
+
+            db.SaveChanges();
 
             return Ok();
         }
 
+        [AllowAnonymous]
+        [HttpPost("slot")]   //dodati na frontu rute i to
+        public IActionResult PredloziVrednostSlota([FromBody] UporediUzorkeModel parametri)
+        {
+            var lab = db.LabVezba.FirstOrDefault(x => x.Id == parametri.LabVezbaId);
+
+            List<int> prosleGeneracije = VremeZadrzavanja(lab.Tag, lab.Naziv, parametri.Redosled);
+
+            string message = PredloziSlot(prosleGeneracije);
+
+
+            //ispisi na frontu ili kako god
+            //ali to prilikom pravljenja formice za profesora da bira jel oce da izmeni ili ne....
+            return Ok(message);
+        }
         #region protocno
 
         [AllowAnonymous]
@@ -450,19 +478,22 @@ namespace WebApplication.Controllers
             //parametri.Slot = 5;
             //parametri.Kraj = new DateTime(2020, 11, 11, 23, 0, 0);
 
-            DateTime pocetakSpec = DateTime.Now;
+            // DateTime pocetakSpec = DateTime.Now;
             int? index = 0;
 
             var specificna = db.LabSpecificna.FirstOrDefault(x => x.Id == parametri.LabVezbaSpecificnaId);
+            parametri.IzabraniTermin = specificna.VremeOd.Value;
+
+            DateTime pocetakSpec = parametri.IzabraniTermin;
 
             if (specificna != null)
             {
                 parametri.Redosled = specificna.Redosled.Value;
-                parametri.Pocetak = specificna.VremeOd.Value;
+                //parametri.Pocetak = specificna.VremeOd.Value;
 
                 var spec = db.LabSpecificna.Where(x => x.IdLabVezbe == parametri.LabVezbaId
                                                && x.Redosled == parametri.Redosled
-                                               && x.VremeOd >= parametri.Pocetak)
+                                               && x.VremeOd >= parametri.IzabraniTermin)
                .Include(x => x.Raspored)
                .ThenInclude(x => x.StudentNavigation);
 
@@ -486,7 +517,7 @@ namespace WebApplication.Controllers
                 }
 
                 db.LabSpecificna.RemoveRange(spec);
-                db.SaveChanges();
+               // db.SaveChanges();
             }
             else
             {
@@ -495,13 +526,13 @@ namespace WebApplication.Controllers
 
             //POKUPI STUDENTE KOJI NISU USLI NA DANASNJU VEZBU
             var query = db.Student.AsQueryable();
-            query = query.Where(s => s.LabVezbaStudent.Any(x=>x.LabVezbaId == specificna.IdLabVezbe) && s.Indeks >= index);
+            query = query.Where(s => s.LabVezbaStudent.Any(x => x.LabVezbaId == specificna.IdLabVezbe) && s.Indeks >= index);
 
             query = query.OrderBy(x => x.Indeks);
 
             var list = query.ToList();
 
-            var res = ProtocniRaspored(parametri).Select(x => x.First()).ToList();
+            var res = ProtocniDinamickiRaspored(parametri).Select(x => x.First()).ToList();
             var skip = 0;
             var i = 0;
             foreach (var num in res)
@@ -538,76 +569,10 @@ namespace WebApplication.Controllers
                 i++;
             }
 
-            db.SaveChanges();
+            //db.SaveChanges();
             return Ok();
         }
 
-        public IActionResult LinearnoPomeriTermine([FromBody] RaspodeliProtocnoModel parametri)
-        {
-            var res = ProtocniRaspored(parametri).Select(x => x.First()).ToList();
-
-            //TODO: POKUPI STUDENTE KOJI NISU USLI NA DANASNJU VEZBU
-            var query = db.Student.AsQueryable();
-            query = query.Where(s => s.LabVezbaStudent.Any(x => x.LabVezbaId == parametri.LabVezbaId) && s.Raspored.Any(x => x.PocetakLaba == null));
-
-            query = query.OrderBy(x => x.Indeks);
-
-            var list = query.ToList();
-
-            //TODO: ZA SVAKOG DODAJ RASPORED
-
-            var skip = 0;
-            var i = 0;
-            foreach (var num in res)
-            {
-                var specificna = db.LabSpecificna.FirstOrDefault(x => x.IdLabVezbe == parametri.LabVezbaId && x.Redosled == parametri.Redosled && x.VremeOd.Value.Date == DateTime.Now.Date);
-
-                if (specificna == null)
-                {
-                    specificna = new LabSpecificna
-                    {
-                        IdLabVezbe = parametri.LabVezbaId,
-                        Redosled = parametri.Redosled,
-                        //razmisli
-                        VremeOd = parametri.Pocetak.AddMinutes(i * parametri.Slot + parametri.VremeKasnjenja)
-                    };
-                }
-
-                var studentiUSlot = list.Skip(skip).Take((int)num);
-                skip += (int)num;
-
-                foreach (var student in studentiUSlot)
-                {
-
-                    var raspored = db.Raspored.FirstOrDefault(x => x.Student == student.Id && x.LabVezba == specificna.Id);
-
-
-                    if (raspored == null)
-                    {
-                        new Raspored
-                        {
-                            StudentNavigation = student,
-                            Ucionica = parametri.Ucionica,
-                            LabVezbaNavigation = specificna
-                        };
-                        db.Raspored.Add(raspored);
-                    }
-                    //raspored.PocetakLaba = parametri.Pocetak.AddMinutes(i * parametri.Slot);
-                    raspored.Izmenjen = true;
-
-                    // notifier.Send(student.Username, $"Obaveštenje o lab vežbama. Došlo je do izmene za {specificna.IdLabVezbeNavigation.Naziv} - {specificna.Redosled} termin {specificna.VremeOd}");
-
-                }
-
-                i++;
-            }
-
-            db.SaveChanges();
-            return Ok();
-        }
-
-        //List<List<double>> ProtocniRaspored(int kapacitet, DateTime pocetak, DateTime kraj, int slot, List<double> listaSurvivalRate)
-        // [HttpPost("raspodeli")]
         public List<List<double>> ProtocniRaspored([FromBody] RaspodeliProtocnoModel parametri)
         {
             var lab = db.LabVezba.Find(parametri.LabVezbaId);
@@ -648,6 +613,8 @@ namespace WebApplication.Controllers
                             sum += sli[i - j][j];
                     }
                     k = Convert.ToDouble(kapacitet) - sum;
+                    if (k <= 0)
+                        k = 0;
 
                     for (int l = 0; l < listaSurvivalRate.Count(); l++)
                         pom.Add(Math.Round(k * listaSurvivalRate[l]));
@@ -657,10 +624,89 @@ namespace WebApplication.Controllers
             }
             return sli;
         }
+        private List<List<double>> ProtocniDinamickiRaspored(RaspodeliProtocnoModel parametri)
+        {
+            var lab = db.LabVezba.Find(parametri.LabVezbaId);
 
-        //[HttpPost("zadrzavanje")]
-        //public List<int> VremeZadrzavanja([FromBody] ZadrzavanjaModel zadrzavanja)
-        public List<int> VremeZadrzavanja(string tag, string naziv, int redosled)
+            int kapacitet = parametri.Kapacitet;
+            DateTime pocetak = parametri.Pocetak;
+            DateTime kraj = parametri.Kraj;
+            int trajanje = parametri.Trajanje;
+            int slot = parametri.Slot;
+
+
+            List<double> listaSurvivalRate = SurvivalRate(StudentiUSlotu(VremeZadrzavanja(lab.Tag, lab.Naziv, parametri.Redosled), slot));
+
+
+            List<List<double>> sli = new List<List<double>>();
+            List<List<double>> slipom = new List<List<double>>();
+
+            int brojSlotova = (int)((kraj - pocetak).TotalMinutes - trajanje) / slot + 1;
+
+            DateTime vremepom = pocetak;
+
+            int indeks_slota_termina = 0;
+
+            while (vremepom != parametri.IzabraniTermin)
+            {
+                DateTime d = vremepom.AddMinutes(slot);
+                vremepom = d;
+                indeks_slota_termina++;
+            }
+
+            double k;
+
+            for (int i = 0; i < brojSlotova; i++)
+            {
+                List<double> pom = new List<double>();
+
+                if (i == indeks_slota_termina)
+                {
+                    kapacitet = parametri.NoviKapacitet;
+                }
+                if (i == 0)
+                {
+                    for (int j = 0; j < listaSurvivalRate.Count(); j++)
+                    {
+                        pom.Add(Math.Round(kapacitet * listaSurvivalRate[j]));
+                    }
+
+                    sli.Add(pom);
+                }
+                else
+                {
+                    double sum = 0.00;
+                    for (int j = 1; j < (i + 1); j++)
+                    {
+                        if (j >= sli[i - j].Count())
+                        {
+                            sum += 0;
+                        }
+                        else
+                        {
+                            sum += sli[i - j][j];
+                        }
+                    }
+                    k = Convert.ToDouble(kapacitet) - sum;
+                    if (k <= 0)
+                        k = 0;
+
+                    for (int l = 0; l < listaSurvivalRate.Count(); l++)
+                    {
+                        pom.Add(Math.Round(k * listaSurvivalRate[l]));
+                    }
+
+                    sli.Add(pom);
+                }
+            }
+
+            for (int t = indeks_slota_termina; t < sli.Count(); t++)
+            {
+                slipom.Add(sli[t]);
+            }
+            return slipom;
+        }
+        private List<int> VremeZadrzavanja(string tag, string naziv, int redosled)
         {
             List<int> lista = new List<int>();
             string query = "USP_ZADRZAVANJE";
@@ -688,7 +734,7 @@ namespace WebApplication.Controllers
             }
         }
 
-        public List<int> TrenutnoVremeZadrzavanja(string tag, string naziv, int redosled)
+        private List<int> TrenutnoVremeZadrzavanja(string tag, string naziv, int redosled)
         {
             List<int> lista = new List<int>();
             string query = "USP_TRENUTNO_ZADRZAVANJE";
@@ -741,7 +787,7 @@ namespace WebApplication.Controllers
             return li;
         }
 
-        List<double> SurvivalRate(List<int> lista)
+        private List<double> SurvivalRate(List<int> lista)
         {
             List<double> li = new List<double>();
 
@@ -802,6 +848,23 @@ namespace WebApplication.Controllers
             return poruka;
         }
 
+        private string PredloziSlot(List<int> prosleGeneracije)
+        {
+            Sample sample = new Sample();
+
+            string poruka = "";
+
+            foreach (int i in prosleGeneracije)
+                sample.Add(i);
+
+            double mi = sample.Mean;
+            double odVredost = mi / 8;
+            double doVrednost = mi / 4;
+
+            poruka += $"Preporucuje se vremenski slot u vrednosti od {odVredost:N0} do {doVrednost:N0} minuta.";
+
+            return poruka;
+        }
 
         #endregion
     }

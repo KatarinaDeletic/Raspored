@@ -13,7 +13,9 @@ namespace Domain
         public int Trajanje { get; set; }
         public DateTime Pocetak { get; set; }
         public DateTime Kraj { get; set; }
+        public DateTime IzabraniTermin { get; set; }
         public int Kapacitet { get; set; }
+        public int NoviKapacitet { get; set; }
         public int Slot { get; set; }
         public int BrojStudenata { get; set; }
         public int minIndeks { get; set; }
